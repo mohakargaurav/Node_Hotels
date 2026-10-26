@@ -1,6 +1,12 @@
+require('dotenv').config();
+
+const dns = require('node:dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
 const express = require('express')
 const app = express();
 const db = require('./db');
+
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -18,8 +24,11 @@ const menuItemRoutes = require('./routes/menuitemRoutes');
 app.use('/person',personRoutes);
 app.use('/menu',menuItemRoutes);
 
-app.listen(3000, ()=>{
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, ()=>{
     console.log('server is listening on port 3000')
 })
 
   
+

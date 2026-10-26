@@ -1,28 +1,28 @@
-
 const mongoose = require('mongoose');
 
-// Define the MongoDB connection URL
-const mongoURL = 'mongodb://localhost:27017/hotels';
+//const mongoURL = 'mongodb://localhost:27017/hotels'
+const mongoURL = process.env.MONGODB_URL;
+//const mongoURL = process.env.MONGODB_URL_LOCAL;
 
-// Set up the MongoDB connection
-mongoose.connect(mongoURL);
-
+// Listen for connection events
 const db = mongoose.connection;
 
-// Listen for successful database connection
 db.on('connected', () => {
-    console.log('Connected to MongoDB server');
+    console.log('Connected to MongoDB Atlas');
 });
 
-// Listen for database connection errors
 db.on('error', (err) => {
-    console.log('MongoDB connection error:', err);
+    console.error('MongoDB connection error:', err.message);
 });
 
-// Listen for database disconnection
 db.on('disconnected', () => {
     console.log('MongoDB disconnected');
 });
 
-// Export the database connection
+// Connect to MongoDB Atlas
+mongoose.connect(mongoURL)
+    .catch((err) => {
+        console.error('Initial connection failed:', err.message);
+    });
+
 module.exports = db;
